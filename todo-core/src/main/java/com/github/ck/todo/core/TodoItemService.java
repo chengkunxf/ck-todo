@@ -23,4 +23,8 @@ public class TodoItemService {
         TodoItem todoItem = new TodoItem(todoParameter.getContent());
         return this.repository.save(todoItem);
     }
+
+    public TodoItem markTodoItemDone(final TodoIndexParameter index) {
+        return null;
+    }
 }
