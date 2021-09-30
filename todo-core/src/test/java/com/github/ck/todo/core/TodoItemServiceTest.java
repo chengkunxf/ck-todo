@@ -1,4 +1,6 @@
 package com.github.ck.todo.core;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,11 +15,19 @@ import static org.mockito.Mockito.when;
  * @description
  */
 public class TodoItemServiceTest {
+
+    private TodoItemRepository repository;
+    private TodoItemService service;
+
+    @BeforeEach
+    private void setUp() {
+        repository = mock(TodoItemRepository.class);
+        service = new TodoItemService(repository);
+    }
+
     @Test
     public void should_add_todo_item() {
-        TodoItemRepository repository = mock(TodoItemRepository.class);
         when(repository.save(any())).then(returnsFirstArg());
-        TodoItemService service = new TodoItemService(repository);
         TodoItem todoItem = service.addTodoItem(new TodoParameter("foo"));
         assertThat(todoItem.getContent()).isEqualTo("foo");
     }
