@@ -2,6 +2,7 @@ package com.github.ck.todo.core;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -27,6 +28,14 @@ public class TodoItemService {
     }
 
     public Optional<TodoItem> markTodoItemDone(final TodoIndexParameter todoIndexParameter) {
-        return null;
+        List<TodoItem> all = this.repository.findAll();
+        Optional<TodoItem> todoItemOptional = all.stream()
+                .filter(element -> element.getIndex() == todoIndexParameter.getIndex())
+                .findFirst();
+        TodoItem todoItem = todoItemOptional.get();
+        todoItem.markDone();
+        TodoItem save = this.repository.save(todoItem);
+        return Optional.of(save);
     }
+
 }

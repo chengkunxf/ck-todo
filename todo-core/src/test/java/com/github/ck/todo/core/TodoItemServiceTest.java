@@ -44,9 +44,16 @@ public class TodoItemServiceTest {
 
     @Test
     public void should_mark_todo_item_as_done(){
-        when(repository.findAll()).thenReturn(ImmutableList.of(new TodoItem("foo")));
+        TodoItem foo = new TodoItem("foo");
+        foo.assignIndex(1);
+        when(repository.findAll()).thenReturn(ImmutableList.of(foo));
         when(repository.save(any())).then(returnsFirstArg());
 
         final Optional<TodoItem> itemOptional = service.markTodoItemDone(new TodoIndexParameter(1));
+        assertThat(itemOptional).isPresent();
+
+        final TodoItem actual = itemOptional.get();
+        assertThat(actual.isDone()).isTrue();
     }
+
 }
