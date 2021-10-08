@@ -56,4 +56,12 @@ public class TodoItemServiceTest {
         assertThat(actual.isDone()).isTrue();
     }
 
+    @Test
+    public void should_not_mark_todo_item_for_out_of_scope_index() {
+        TodoItem foo = new TodoItem("foo");
+        foo.assignIndex(1);
+        when(repository.findAll()).thenReturn(ImmutableList.of(foo));
+        final Optional<TodoItem> todoItem = service.markTodoItemDone(new TodoIndexParameter(2));
+        assertThat(todoItem).isEmpty();
+    }
 }
