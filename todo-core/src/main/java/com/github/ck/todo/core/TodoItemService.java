@@ -2,6 +2,8 @@ package com.github.ck.todo.core;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * @author chengkunxf@126.com
  * @date 2021/9/30 4:45 下午
@@ -24,7 +26,7 @@ public class TodoItemService {
         return this.repository.save(todoItem);
     }
 
-    public TodoItem markTodoItemDone(final TodoIndexParameter index) {
+    public Optional<TodoItem> markTodoItemDone(final TodoIndexParameter todoIndexParameter) {
         return null;
     }
 }

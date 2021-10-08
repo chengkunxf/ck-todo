@@ -6,4 +6,10 @@ package com.github.ck.todo.core;
  * @description
  */
 public class TodoIndexParameter {
+
+    private final int index;
+
+    public TodoIndexParameter(final int index) {
+        this.index = index;
+    }
 }

@@ -1,7 +1,10 @@
 package com.github.ck.todo.core;
 
+import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -37,5 +40,13 @@ public class TodoItemServiceTest {
     public void should_throw_exception_for_null_todo_item() {
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> service.addTodoItem(null));
+    }
+
+    @Test
+    public void should_mark_todo_item_as_done(){
+        when(repository.findAll()).thenReturn(ImmutableList.of(new TodoItem("foo")));
+        when(repository.save(any())).then(returnsFirstArg());
+
+        final Optional<TodoItem> itemOptional = service.markTodoItemDone(new TodoIndexParameter(1));
     }
 }
