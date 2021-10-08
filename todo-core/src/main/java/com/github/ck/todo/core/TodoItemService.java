@@ -29,13 +29,15 @@ public class TodoItemService {
 
     public Optional<TodoItem> markTodoItemDone(final TodoIndexParameter todoIndexParameter) {
         List<TodoItem> all = this.repository.findAll();
-        Optional<TodoItem> todoItemOptional = all.stream()
+        Optional<TodoItem> optionalTodoItem = all.stream()
                 .filter(element -> element.getIndex() == todoIndexParameter.getIndex())
                 .findFirst();
-        TodoItem todoItem = todoItemOptional.get();
+        return optionalTodoItem.flatMap(this::doMarkAsDone);
+    }
+
+    private Optional<TodoItem> doMarkAsDone(final TodoItem todoItem) {
         todoItem.markDone();
-        TodoItem save = this.repository.save(todoItem);
-        return Optional.of(save);
+        return Optional.of(this.repository.save(todoItem));
     }
 
 }
