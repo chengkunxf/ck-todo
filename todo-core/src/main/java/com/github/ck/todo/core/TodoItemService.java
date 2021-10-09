@@ -32,19 +32,19 @@ public class TodoItemService {
         Optional<TodoItem> optionalTodoItem = all.stream()
                 .filter(element -> element.getIndex() == todoIndexParameter.getIndex())
                 .findFirst();
-        if (optionalTodoItem.isPresent()) {
-            TodoItem todoItem = optionalTodoItem.get();
-            todoItem.markDone();
-            todoItem = this.repository.save(todoItem);
-            return Optional.of(todoItem);
-        }
-        return Optional.empty();
-//        return optionalTodoItem.flatMap(this::doMarkAsDone);
+//        if (optionalTodoItem.isPresent()) {
+//            TodoItem todoItem = optionalTodoItem.get();
+//            todoItem.markDone();
+//            todoItem = this.repository.save(todoItem);
+//            return Optional.of(todoItem);
+//        }
+//        return Optional.empty();
+        return optionalTodoItem.flatMap(this::doMarkAsDone);
     }
 
-//    private Optional<TodoItem> doMarkAsDone(final TodoItem todoItem) {
-//        todoItem.markDone();
-//        return Optional.of(this.repository.save(todoItem));
-//    }
+    private Optional<TodoItem> doMarkAsDone(final TodoItem todoItem) {
+        todoItem.markDone();
+        return Optional.of(this.repository.save(todoItem));
+    }
 
 }
