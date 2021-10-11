@@ -12,4 +12,6 @@ public interface TodoItemRepository {
     TodoItem save(TodoItem todoItem);
 
     List<TodoItem> findAll();
+
+    List list(boolean all);
 }

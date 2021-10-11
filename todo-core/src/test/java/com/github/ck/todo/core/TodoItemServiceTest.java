@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,7 +25,7 @@ public class TodoItemServiceTest {
     private TodoItemService service;
 
     @BeforeEach
-    private void setUp(){
+    private void setUp() {
         repository = mock(TodoItemRepository.class);
         service = new TodoItemService(repository);
     }
@@ -37,12 +38,12 @@ public class TodoItemServiceTest {
     }
 
     @Test
-    public void should_throw_exception_for_null_item(){
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(()->service.addTodoItem(null));
+    public void should_throw_exception_for_null_item() {
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> service.addTodoItem(null));
     }
 
     @Test
-    public void should_mark_todo_item_as_done(){
+    public void should_mark_todo_item_as_done() {
         when(repository.save(any())).then(returnsFirstArg());
         TodoItem foo = new TodoItem("foo");
         foo.assignIndex(1);
@@ -52,12 +53,42 @@ public class TodoItemServiceTest {
     }
 
     @Test
-    public void should_not_mark_todo_item_as_done_for_out_of_index(){
+    public void should_not_mark_todo_item_as_done_for_out_of_index() {
         when(repository.save(any())).then(returnsFirstArg());
         TodoItem foo = new TodoItem("foo");
         foo.assignIndex(1);
         when(repository.findAll()).thenReturn(ImmutableList.of(foo));
         Optional<TodoItem> optionalTodoItem = service.markTodoItemDone(new TodoIndexParameter(2));
         assertThat(optionalTodoItem).isEmpty();
+    }
+
+    @Test
+    public void should_list_all() {
+        TodoItem foo = new TodoItem("foo");
+        foo.assignIndex(1);
+        when(repository.findAll()).thenReturn(ImmutableList.of(foo));
+        List<TodoItem> list = service.list(true);
+        assertThat(list).hasSize(1);
+        TodoItem todoItem = list.get(0);
+        assertThat(todoItem.getContent()).isEqualTo("foo");
+        assertThat(todoItem.getIndex()).isEqualTo(1);
+    }
+
+    @Test
+    public void should_list_all_not_done() {
+        TodoItem foo = new TodoItem("foo");
+        foo.assignIndex(1);
+        foo.markDone();
+        TodoItem bar = new TodoItem("bar");
+        bar.assignIndex(2);
+        when(repository.findAll()).thenReturn(ImmutableList.of(foo, bar));
+
+        List<TodoItem> list = service.list(false);
+        assertThat(list).hasSize(1);
+
+        TodoItem todoItem = list.get(0);
+        assertThat(todoItem.getIndex()).isEqualTo(2);
+        assertThat(todoItem.getContent()).isEqualTo("bar");
+
     }
 }
