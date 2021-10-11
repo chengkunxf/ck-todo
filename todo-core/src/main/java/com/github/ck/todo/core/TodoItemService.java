@@ -17,6 +17,6 @@ public class TodoItemService {
     }
 
     public TodoItem addTodoItem(final TodoParameter parameter) {
-        return this.repository.save(parameter);
+        return this.repository.save(new TodoItem(parameter.getContent()));
     }
 }

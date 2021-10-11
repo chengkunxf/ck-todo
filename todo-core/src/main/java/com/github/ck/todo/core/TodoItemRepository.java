@@ -7,5 +7,5 @@ package com.github.ck.todo.core;
  */
 public interface TodoItemRepository {
 
-    TodoItem save(TodoParameter parameter);
+    TodoItem save(TodoItem todoItem);
 }
