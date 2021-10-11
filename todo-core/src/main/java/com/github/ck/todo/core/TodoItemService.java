@@ -23,16 +23,16 @@ public class TodoItemService {
         return this.repository.save(new TodoItem(parameter.getContent()));
     }
 
-    public TodoItem markTodoItemDone(final TodoIndexParameter parameter) {
+    public Optional<TodoItem> markTodoItemDone(final TodoIndexParameter parameter) {
         List<TodoItem> all = this.repository.findAll();
         Optional<TodoItem> optionalTodoItem = all.stream()
                 .filter(element -> element.getIndex() == parameter.getIndex())
                 .findFirst();
-        if (optionalTodoItem.isPresent()) {
-            TodoItem todoItem = optionalTodoItem.get();
-            todoItem.markDone();
-            return this.repository.save(todoItem);
-        }
-        return null;
+        return optionalTodoItem.flatMap(this::doAsDone);
+    }
+
+    private Optional<TodoItem> doAsDone(final TodoItem todoItem) {
+        todoItem.markDone();
+        return Optional.of(this.repository.save(todoItem));
     }
 }

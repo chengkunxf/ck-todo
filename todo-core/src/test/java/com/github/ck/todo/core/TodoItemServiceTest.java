@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,8 +41,8 @@ public class TodoItemServiceTest {
         TodoItem foo = new TodoItem("foo");
         foo.assignIndex(1);
         when(repository.findAll()).thenReturn(ImmutableList.of(foo));
-        TodoItem todoItem = service.markTodoItemDone(new TodoIndexParameter(1));
-        assertThat(todoItem.isDone()).isTrue();
+        Optional<TodoItem> optionalTodoItem = service.markTodoItemDone(new TodoIndexParameter(1));
+        assertThat(optionalTodoItem.get().isDone()).isTrue();
     }
 
     @Test
@@ -49,7 +51,7 @@ public class TodoItemServiceTest {
         TodoItem foo = new TodoItem("foo");
         foo.assignIndex(1);
         when(repository.findAll()).thenReturn(ImmutableList.of(foo));
-        TodoItem todoItem = service.markTodoItemDone(new TodoIndexParameter(2));
-        assertThat(todoItem).isNull();
+        Optional<TodoItem> optionalTodoItem = service.markTodoItemDone(new TodoIndexParameter(2));
+        assertThat(optionalTodoItem).isEmpty();
     }
 }
