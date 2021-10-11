@@ -20,6 +20,9 @@ public class TodoItemService {
     }
 
     public TodoItem addTodoItem(final TodoParameter parameter) {
+        if (parameter == null) {
+            throw new IllegalArgumentException("Null or empty is not allowed");
+        }
         return this.repository.save(new TodoItem(parameter.getContent()));
     }
 

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -33,6 +34,11 @@ public class TodoItemServiceTest {
         when(repository.save(any())).then(returnsFirstArg());
         TodoItem todoItem = service.addTodoItem(new TodoParameter("foo"));
         assertThat(todoItem.getContent()).isEqualTo("foo");
+    }
+
+    @Test
+    public void should_throw_exception_for_null_item(){
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(()->service.addTodoItem(null));
     }
 
     @Test
