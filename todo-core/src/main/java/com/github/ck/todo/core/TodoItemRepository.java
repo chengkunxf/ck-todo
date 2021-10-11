@@ -13,5 +13,4 @@ public interface TodoItemRepository {
 
     List<TodoItem> findAll();
 
-    List list(boolean all);
 }
