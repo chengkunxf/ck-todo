@@ -11,8 +11,19 @@ import lombok.Getter;
 public class TodoItem {
 
     private final String content;
+    private int index;
+    private boolean done;
 
     public TodoItem(final String content) {
         this.content = content;
+        this.done = false;
+    }
+
+    public void markDone() {
+        this.done = true;
+    }
+
+    public void assignIndex(final int index) {
+        this.index = index;
     }
 }
