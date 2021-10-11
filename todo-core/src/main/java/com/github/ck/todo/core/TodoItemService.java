@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author chengkunxf@126.com
@@ -47,4 +48,9 @@ public class TodoItemService {
         return Optional.of(this.repository.save(todoItem));
     }
 
+    public List<TodoItem> list(final boolean isAll) {
+        return this.repository.findAll().stream()
+                .filter(element -> isAll || !element.isDone())
+                .collect(Collectors.toList());
+    }
 }
