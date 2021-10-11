@@ -80,6 +80,21 @@ public class TodoItemServiceTest {
         assertThat(todoItem.getContent()).isEqualTo("foo");
     }
 
+    @Test
+    public void should_list_all_without_done() {
+        TodoItem foo = new TodoItem("foo");
+        foo.assignIndex(1);
+        foo.markDone();
 
+        TodoItem bar = new TodoItem("bar");
+        bar.assignIndex(2);
+
+        when(repository.findAll()).thenReturn(ImmutableList.of(foo, bar));
+
+        List<TodoItem> todoItemList = service.list(false);
+        TodoItem todoItem = todoItemList.get(0);
+        assertThat(todoItem.getIndex()).isEqualTo(2);
+        assertThat(todoItem.getContent()).isEqualTo("bar");
+    }
 
 }
