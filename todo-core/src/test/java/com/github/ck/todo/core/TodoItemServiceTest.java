@@ -1,4 +1,8 @@
+package com.github.ck.todo.core;
+
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author chengkunxf@126.com
@@ -8,7 +12,7 @@ import org.junit.jupiter.api.Test;
 public class TodoItemServiceTest {
 
     @Test
-    public void should_add_todo_item(){
+    public void should_add_todo_item() {
         TodoItemRepository repository = null;
         TodoItemService service = new TodoItemService(repository);
         TodoItem todoItem = service.addTodoItem(new TodoParameter("foo"));
