@@ -5,6 +5,8 @@ import org.assertj.core.annotations.Beta;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
@@ -48,7 +50,9 @@ public class TodoItemServiceTest {
         foo.assignIndex(1);
         when(repository.findAll()).thenReturn(ImmutableList.of(foo));
         when(repository.save(any())).then(returnsFirstArg());
-        TodoItem todoItem = service.markTodoItemDone(new TodoIndexParameter(1));
+        Optional<TodoItem> optionalTodoItem = service.markTodoItemDone(new TodoIndexParameter(1));
+        assertThat(optionalTodoItem).isPresent();
+        TodoItem todoItem = optionalTodoItem.get();
         assertThat(todoItem.isDone()).isTrue();
     }
 
@@ -58,7 +62,7 @@ public class TodoItemServiceTest {
         foo.assignIndex(1);
         when(repository.findAll()).thenReturn(ImmutableList.of(foo));
         when(repository.save(any())).then(returnsFirstArg());
-        TodoItem todoItem = service.markTodoItemDone(new TodoIndexParameter(2));
-        assertThat(todoItem).isNull();
+        Optional<TodoItem> optionalTodoItem = service.markTodoItemDone(new TodoIndexParameter(2));
+        assertThat(optionalTodoItem).isEmpty();
     }
 }
