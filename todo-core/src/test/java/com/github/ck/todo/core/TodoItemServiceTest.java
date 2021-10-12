@@ -1,7 +1,6 @@
 package com.github.ck.todo.core;
 
 import com.google.common.collect.ImmutableList;
-import org.assertj.core.annotations.Beta;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
