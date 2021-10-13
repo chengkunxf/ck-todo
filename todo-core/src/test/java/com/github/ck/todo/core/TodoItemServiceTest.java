@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,7 +51,7 @@ public class TodoItemServiceTest {
     }
 
     @Test
-    public void should_mark_todo_item_done_out_of_index(){
+    public void should_mark_todo_item_done_out_of_index() {
         TodoItem todoItem = new TodoItem("foo");
         todoItem.assignIndex(1);
         when(repository.findAll()).thenReturn(ImmutableList.of(todoItem));
@@ -58,5 +59,32 @@ public class TodoItemServiceTest {
 
         Optional<TodoItem> optionalTodoItem = service.markTodoItemDone(new TodoIndexParameter(2));
         assertThat(optionalTodoItem).isEmpty();
+    }
+
+    @Test
+    public void should_list_all() {
+        TodoItem todoItem = new TodoItem("foo");
+        todoItem.assignIndex(1);
+        when(repository.findAll()).thenReturn(ImmutableList.of(todoItem));
+
+        List<TodoItem> list = service.list(true);
+        assertThat(list).hasSize(1);
+    }
+
+    @Test
+    public void should_list_all_by_not_done() {
+        TodoItem todoItem = new TodoItem("foo");
+        todoItem.assignIndex(1);
+        todoItem.markDone();
+
+        TodoItem bar = new TodoItem("bar");
+        bar.assignIndex(2);
+
+        when(repository.findAll()).thenReturn(ImmutableList.of(todoItem, bar));
+
+        List<TodoItem> list = service.list(false);
+        assertThat(list).hasSize(1);
+        TodoItem bar1 = list.get(0);
+        assertThat(bar1.getIndex()).isEqualTo(2);
     }
 }
