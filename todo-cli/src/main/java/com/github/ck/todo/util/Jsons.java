@@ -1,4 +1,4 @@
-package com.github.ck.todo.cli.util;
+package com.github.ck.todo.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
