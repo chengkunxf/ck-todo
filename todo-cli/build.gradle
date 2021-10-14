@@ -12,6 +12,7 @@ coverage {
     excludeClasses = [
             "com.github.ck.todo.cli.Bootstrap",
             "com.github.ck.todo.util.Jsons"
+
     ]
 }
 
