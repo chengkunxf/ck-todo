@@ -37,10 +37,13 @@ public class FileTodoItemRepository implements TodoItemRepository {
             return ImmutableList.of();
         }
 
+        return fileToObjects();
+    }
+
+    private List<TodoItem> fileToObjects() {
         try {
-            System.out.println(this.file.getAbsolutePath());
             final CollectionType type = typeFactory.constructCollectionType(List.class, TodoItem.class);
-            return mapper.readValue(this.file, type);
+            return mapper.readValue(file, type);
         } catch (IOException e) {
             throw new TodoException("Fail to read todo items", e);
         }

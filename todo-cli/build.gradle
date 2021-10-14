@@ -2,7 +2,7 @@ style {
     excludePackages = [
     ]
     excludeClasses = [
-            "com.github.dreamhead.todo.cli.Bootstrap"
+            "com.github.ck.todo.cli.Bootstrap"
     ]
 }
 
@@ -10,14 +10,14 @@ coverage {
     excludePackages = [
     ]
     excludeClasses = [
-            "com.github.dreamhead.todo.cli.Bootstrap",
-            "com.github.dreamhead.todo.util.Jsons"
+            "com.github.ck.todo.cli.Bootstrap",
+            "com.github.ck.todo.util.Jsons"
     ]
 }
 
 task uberJar(type: Jar) {
     manifest {
-        attributes 'Main-Class': 'com.github.dreamhead.todo.cli.Bootstrap'
+        attributes 'Main-Class': 'com.github.ck.todo.cli.Bootstrap'
     }
     archiveBaseName = 'todo-uber'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
