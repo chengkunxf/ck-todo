@@ -7,6 +7,7 @@ import com.github.ck.todo.util.Jsons;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author chengkunxf@126.com
@@ -29,7 +30,13 @@ public class FileTodoItemRepository implements TodoItemRepository {
             todoItem.assignIndex(all.size() + 1);
             all.add(todoItem);
             Jsons.objectsToFile(this.file, all);
+        } else {
+            List<Object> newAll = all.stream()
+                    .map(element -> updateItem(todoItem, element))
+                    .collect(Collectors.toList());
+            Jsons.objectsToFile(this.file, newAll);
         }
+
         return todoItem;
     }
 

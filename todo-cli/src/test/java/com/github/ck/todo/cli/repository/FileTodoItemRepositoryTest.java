@@ -1,7 +1,6 @@
 package com.github.ck.todo.cli.repository;
 
 import com.github.ck.todo.core.TodoItem;
-import com.google.common.collect.Iterables;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -48,5 +47,20 @@ public class FileTodoItemRepositoryTest {
         final TodoItem secondItem = items.get(1);
         assertThat(secondItem.getContent()).isEqualTo("bar");
         assertThat(secondItem.getIndex()).isEqualTo(2);
+    }
+
+    @Test
+    public void should_update_saved_items() {
+        repository.save(new TodoItem("foo"));
+        repository.save(new TodoItem("bar"));
+        final List<TodoItem> items = repository.findAll();
+        final TodoItem toUpdate = items.get(0);
+        toUpdate.markDone();
+
+        repository.save(toUpdate);
+
+        final List<TodoItem> updated = repository.findAll();
+        assertThat(updated).hasSize(2);
+        assertThat(updated.get(0).isDone()).isTrue();
     }
 }
