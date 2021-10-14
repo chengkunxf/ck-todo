@@ -1,4 +1,4 @@
-package com.github.ck.todo.cli;
+package com.github.ck.todo.cli.repository;
 
 import com.github.ck.todo.core.TodoItem;
 import org.junit.jupiter.api.BeforeEach;
