@@ -31,7 +31,7 @@ public class FileTodoItemRepositoryTest {
     }
 
     @Test
-    public void should_find_nothing_for_empty_repository(){
+    public void should_find_nothing_for_empty_repository() {
         List<TodoItem> all = repository.findAll();
         assertThat(all).hasSize(0);
     }
@@ -40,12 +40,12 @@ public class FileTodoItemRepositoryTest {
     public void should_find_saved_items() {
         repository.save(new TodoItem("foo"));
         repository.save(new TodoItem("bar"));
-        final Iterable<TodoItem> items = repository.findAll();
+        List<TodoItem> items = repository.findAll();
         assertThat(items).hasSize(2);
-        final TodoItem firstItem = Iterables.get(items, 0);
+        final TodoItem firstItem = items.get(0);
         assertThat(firstItem.getContent()).isEqualTo("foo");
         assertThat(firstItem.getIndex()).isEqualTo(1);
-        final TodoItem secondItem = Iterables.get(items, 1);
+        final TodoItem secondItem = items.get(1);
         assertThat(secondItem.getContent()).isEqualTo("bar");
         assertThat(secondItem.getIndex()).isEqualTo(2);
     }
