@@ -29,7 +29,6 @@ public class FileTodoItemRepositoryTest {
         this.repository = new FileTodoItemRepository(this.tempFile);
     }
 
-
     @Test
     public void should_find_nothing_for_empty_repository(){
         List<TodoItem> all = repository.findAll();
