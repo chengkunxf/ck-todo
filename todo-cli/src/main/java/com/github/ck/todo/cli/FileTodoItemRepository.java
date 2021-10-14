@@ -18,8 +18,6 @@ import java.util.List;
 public class FileTodoItemRepository implements TodoItemRepository {
 
     private final File file;
-    private TypeFactory typeFactory = TypeFactory.defaultInstance();
-    private ObjectMapper mapper = new ObjectMapper();
 
     public FileTodoItemRepository(final File tempFile) {
         this.file = tempFile;
@@ -36,7 +34,7 @@ public class FileTodoItemRepository implements TodoItemRepository {
             return ImmutableList.of();
         }
 
-        return Jsons.fileToObjects(file, mapper, typeFactory);
+        return Jsons.fileToObjects(file);
     }
 
 }
