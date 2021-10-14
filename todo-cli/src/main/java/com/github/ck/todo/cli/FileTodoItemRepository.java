@@ -1,14 +1,13 @@
 package com.github.ck.todo.cli;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.github.ck.todo.cli.util.Jsons;
 import com.github.ck.todo.core.TodoItem;
 import com.github.ck.todo.core.TodoItemRepository;
 import com.google.common.collect.ImmutableList;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -37,15 +36,7 @@ public class FileTodoItemRepository implements TodoItemRepository {
             return ImmutableList.of();
         }
 
-        return fileToObjects();
+        return Jsons.fileToObjects(file, mapper, typeFactory);
     }
 
-    private List<TodoItem> fileToObjects() {
-        try {
-            final CollectionType type = typeFactory.constructCollectionType(List.class, TodoItem.class);
-            return mapper.readValue(file, type);
-        } catch (IOException e) {
-            throw new TodoException("Fail to read todo items", e);
-        }
-    }
 }
