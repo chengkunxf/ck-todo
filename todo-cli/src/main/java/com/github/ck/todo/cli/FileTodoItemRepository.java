@@ -1,10 +1,8 @@
 package com.github.ck.todo.cli;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.github.ck.todo.cli.util.Jsons;
 import com.github.ck.todo.core.TodoItem;
 import com.github.ck.todo.core.TodoItemRepository;
+import com.github.ck.todo.util.Jsons;
 import com.google.common.collect.ImmutableList;
 
 import java.io.File;
