@@ -1,14 +1,10 @@
 package com.github.ck.todo.cli.repository;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.github.ck.todo.cli.exception.TodoException;
+import com.github.ck.todo.cli.util.Jsons;
 import com.github.ck.todo.core.TodoItem;
 import com.github.ck.todo.core.TodoItemRepository;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,13 +31,7 @@ public class FileTodoItemRepository implements TodoItemRepository {
             return new ArrayList<>();
         }
 
-        TypeFactory typeFactory = TypeFactory.defaultInstance();
-        ObjectMapper mapper = new ObjectMapper();
-        CollectionType collectionType = typeFactory.constructCollectionType(List.class, TodoItem.class);
-        try {
-            return mapper.readValue(file, collectionType);
-        } catch (IOException e) {
-            throw new TodoException("fail to read todo item", e);
-        }
+        return Jsons.readFromFile(file);
     }
+
 }
