@@ -51,4 +51,27 @@ public class FileTodoItemRepositoryTest {
 
     }
 
+    @Test
+    public void should_upate_todo_item(){
+        repository.save(new TodoItem("foo"));
+        repository.save(new TodoItem("bar"));
+
+        List<TodoItem> all = repository.findAll();
+        assertThat(all).hasSize(2);
+
+        TodoItem bar2 = new TodoItem("bar2");
+        bar2.assignIndex(2);
+        bar2.markDone();
+
+        repository.save(bar2);
+        List<TodoItem> newAll = repository.findAll();
+        TodoItem todoItem = newAll.get(1);
+        assertThat(todoItem.getIndex()).isEqualTo(2);
+        assertThat(todoItem.getContent()).isEqualTo("bar2");
+        assertThat(todoItem.isDone()).isTrue();
+
+
+
+    }
+
 }
