@@ -30,6 +30,14 @@ public final class Jsons {
         }
     }
 
+    public static void writeToFile(final File file, final List<TodoItem> all) {
+        try {
+            mapper.writeValue(file, all);
+        } catch (IOException e) {
+            throw new TodoException("fail to write to file ", e);
+        }
+    }
+
     private Jsons() {
 
     }
