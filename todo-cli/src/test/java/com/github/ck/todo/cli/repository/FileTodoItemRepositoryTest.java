@@ -49,4 +49,21 @@ public class FileTodoItemRepositoryTest {
         assertThat(bar.getIndex()).isEqualTo(2);
 
     }
+
+    @Test
+    public void should_update_todo_item(){
+        repository.save(new TodoItem("foo"));
+        repository.save(new TodoItem("bar"));
+        List<TodoItem> all = repository.findAll();
+        assertThat(all).hasSize(2);
+
+        TodoItem bar2 = new TodoItem("bar2");
+        bar2.assignIndex(2);
+        bar2.markDone();
+        repository.save(bar2);
+        List<TodoItem> newall = repository.findAll();
+        assertThat(newall.get(1).getContent()).isEqualTo("bar2");
+        assertThat(newall.get(1).isDone()).isTrue();
+
+    }
 }
