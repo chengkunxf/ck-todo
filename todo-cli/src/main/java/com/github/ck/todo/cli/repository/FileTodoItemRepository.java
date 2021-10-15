@@ -31,7 +31,7 @@ public class FileTodoItemRepository implements TodoItemRepository {
             all.add(todoItem);
             Jsons.objectsToFile(this.file, all);
         } else {
-            List<Object> newAll = all.stream()
+            List<TodoItem> newAll = all.stream()
                     .map(element -> updateItem(todoItem, element))
                     .collect(Collectors.toList());
             Jsons.objectsToFile(this.file, newAll);
@@ -40,7 +40,7 @@ public class FileTodoItemRepository implements TodoItemRepository {
         return todoItem;
     }
 
-    private Object updateItem(final TodoItem todoItem, final TodoItem element) {
+    private TodoItem updateItem(final TodoItem todoItem, final TodoItem element) {
         if (element.getIndex() == todoItem.getIndex()) {
             return todoItem;
         }

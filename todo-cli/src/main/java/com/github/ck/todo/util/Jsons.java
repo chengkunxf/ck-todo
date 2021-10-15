@@ -32,7 +32,7 @@ public final class Jsons {
     private Jsons() {
     }
 
-    public static void objectsToFile(final File file, final List all) {
+    public static void objectsToFile(final File file, final List<TodoItem> all) {
         try {
             mapper.writeValue(file, all);
         } catch (IOException e) {
