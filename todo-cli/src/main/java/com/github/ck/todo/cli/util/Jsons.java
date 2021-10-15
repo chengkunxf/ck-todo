@@ -15,12 +15,12 @@ import java.util.List;
  * @date 2021/10/15 2:54 下午
  * @description
  */
-public class Jsons {
+public final class Jsons {
 
     private static TypeFactory typeFactory = TypeFactory.defaultInstance();
     private static ObjectMapper mapper = new ObjectMapper();
 
-    public static List<TodoItem> readFromFile(File file) {
+    public static List<TodoItem> readFromFile(final File file) {
 
         CollectionType collectionType = typeFactory.constructCollectionType(List.class, TodoItem.class);
         try {
@@ -28,5 +28,9 @@ public class Jsons {
         } catch (IOException e) {
             throw new TodoException("fail to read todo item", e);
         }
+    }
+
+    private Jsons() {
+
     }
 }
