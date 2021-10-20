@@ -34,4 +34,22 @@ public class FileTodoItemRepositoryTest {
         List<TodoItem> all = repository.findAll();
         assertThat(all).hasSize(0);
     }
+
+    @Test
+    public void save_todo_item(){
+        this.repository.save(new TodoItem("foo"));
+        this.repository.save(new TodoItem("bar"));
+
+        List<TodoItem> all = this.repository.findAll();
+        assertThat(all).hasSize(2);
+
+        TodoItem foo = all.get(0);
+        assertThat(foo.getIndex()).isEqualTo(1);
+        assertThat(foo.getContent()).isEqualTo("foo");
+
+        TodoItem bar = all.get(1);
+        assertThat(bar.getIndex()).isEqualTo(2);
+        assertThat(bar.getContent()).isEqualTo("bar");
+
+    }
 }

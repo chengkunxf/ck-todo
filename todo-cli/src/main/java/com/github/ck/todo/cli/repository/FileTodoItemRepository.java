@@ -20,6 +20,8 @@ import java.util.List;
 public class FileTodoItemRepository implements TodoItemRepository {
 
     private File file;
+    private TypeFactory typeFactory = TypeFactory.defaultInstance();
+    private ObjectMapper mapper = new ObjectMapper();
 
     public FileTodoItemRepository(final File file) {
         this.file = file;
@@ -27,6 +29,17 @@ public class FileTodoItemRepository implements TodoItemRepository {
 
     @Override
     public TodoItem save(final TodoItem todoItem) {
+        List<TodoItem> all = findAll();
+        if (todoItem.getIndex() == 0) {
+            todoItem.assignIndex(all.size() + 1);
+            all.add(todoItem);
+
+            try {
+                mapper.writeValue(file, all);
+            } catch (IOException e) {
+                throw new TodoException("Fail to write todoItem objects", e);
+            }
+        }
         return null;
     }
 
@@ -36,8 +49,6 @@ public class FileTodoItemRepository implements TodoItemRepository {
             return new ArrayList<TodoItem>();
         }
 
-        TypeFactory typeFactory = TypeFactory.defaultInstance();
-        ObjectMapper mapper = new ObjectMapper();
         CollectionType type = typeFactory.constructCollectionType(List.class, TodoItem.class);
         try {
             return mapper.readValue(file, type);
