@@ -1,6 +1,9 @@
 package com.github.ck.todo.core;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * @author chengkunxf@126.com
@@ -8,9 +11,11 @@ import lombok.Getter;
  * @description
  */
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class TodoItem {
 
-    private final String content;
+    private String content;
     private int index;
     private boolean done;
 
