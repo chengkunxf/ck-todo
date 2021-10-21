@@ -1,14 +1,10 @@
 package com.github.ck.todo.cli.repository;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.github.ck.todo.cli.exception.TodoException;
+import com.github.ck.todo.cli.util.Jsons;
 import com.github.ck.todo.core.TodoItem;
 import com.github.ck.todo.core.TodoItemRepository;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +16,6 @@ import java.util.List;
 public class FileTodoItemRepository implements TodoItemRepository {
 
     private File file;
-    private TypeFactory typeFactory = TypeFactory.defaultInstance();
-    private ObjectMapper mapper = new ObjectMapper();
 
     public FileTodoItemRepository(final File file) {
         this.file = file;
@@ -34,11 +28,7 @@ public class FileTodoItemRepository implements TodoItemRepository {
             todoItem.assignIndex(all.size() + 1);
             all.add(todoItem);
 
-            try {
-                mapper.writeValue(file, all);
-            } catch (IOException e) {
-                throw new TodoException("Fail to write todoItem objects", e);
-            }
+            Jsons.writeToFile(file, all);
         }
         return null;
     }
@@ -49,11 +39,7 @@ public class FileTodoItemRepository implements TodoItemRepository {
             return new ArrayList<TodoItem>();
         }
 
-        CollectionType type = typeFactory.constructCollectionType(List.class, TodoItem.class);
-        try {
-            return mapper.readValue(file, type);
-        } catch (IOException e) {
-            throw new TodoException("Fail to read TodoItem from file", e);
-        }
+        return Jsons.readFile(file);
     }
+
 }
