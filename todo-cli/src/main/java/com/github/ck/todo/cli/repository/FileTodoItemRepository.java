@@ -7,6 +7,7 @@ import com.github.ck.todo.core.TodoItemRepository;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author chengkunxf@126.com
@@ -29,8 +30,19 @@ public class FileTodoItemRepository implements TodoItemRepository {
             all.add(todoItem);
 
             Jsons.writeToFile(file, all);
+        } else {
+            List<TodoItem> collect = all.stream().map(element -> updateTodoItem(element, todoItem))
+                    .collect(Collectors.toList());
+            Jsons.writeToFile(file, collect);
         }
-        return null;
+        return todoItem;
+    }
+
+    private TodoItem updateTodoItem(final TodoItem oldItem, final TodoItem newItem) {
+        if (oldItem.getIndex() == newItem.getIndex()) {
+            return newItem;
+        }
+        return oldItem;
     }
 
     @Override
