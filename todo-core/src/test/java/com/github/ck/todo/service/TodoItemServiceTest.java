@@ -1,5 +1,6 @@
 package com.github.ck.todo.service;
 
+import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,5 +23,18 @@ public class TodoItemServiceTest {
         TodoItemService service = new TodoItemService(repository);
         TodoItem todoItem = service.addTodoItem(new TodoParameter("itemfoo"));
         assertThat(todoItem.getContent()).isEqualTo("itemfoo");
+    }
+
+    @Test
+    public void  should_mark_todo_item_done(){
+        TodoItemRepository repository = mock(TodoItemRepository.class);
+        TodoItem foo = new TodoItem("foo");
+        foo.assignIndex(1);
+        when(repository.save(any())).then(returnsFirstArg());
+        when(repository.findAll()).thenReturn(ImmutableList.of(foo));
+
+        TodoItemService service = new TodoItemService(repository);
+        TodoItem todoItem =  service.markTodoItemDone(new TodoIndexParameter(1));
+        assertThat(todoItem.isDone()).isTrue();
     }
 }
