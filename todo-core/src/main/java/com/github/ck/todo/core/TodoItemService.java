@@ -2,6 +2,9 @@ package com.github.ck.todo.core;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 /**
  * @author chengkunxf@126.com
  * @date 2021/10/22 2:42 下午
@@ -22,5 +25,18 @@ public class TodoItemService {
         }
         TodoItem todoItem = new TodoItem(todoParameter.getContent());
         return this.repository.save(todoItem);
+    }
+
+    public Optional<TodoItem> markTodoItemDone(final TodoIndexParameter indexParameter) {
+        List<TodoItem> all = this.repository.findAll();
+        Optional<TodoItem> optionalTodoItem = all.stream()
+                .filter(element -> element.getIndex() == indexParameter.getIndex())
+                .findFirst();
+        return optionalTodoItem.flatMap(this::doAsdone);
+    }
+
+    private Optional<TodoItem> doAsdone(final TodoItem todoItem) {
+        todoItem.markDone();
+        return Optional.of(this.repository.save(todoItem));
     }
 }
