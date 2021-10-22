@@ -1,2 +1,5 @@
 rootProject.name = 'ck-todo'
+include 'todo-core'
+include 'todo-cli'
+include 'todo-api'
 
