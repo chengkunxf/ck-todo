@@ -2,6 +2,8 @@ package com.github.ck.todo.core;
 
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * @author chengkunxf@126.com
  * @date 2021/10/22 2:39 下午
