@@ -1,14 +1,10 @@
 package com.github.ck.todo.cli.repository;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.github.ck.todo.cli.exception.TodoItemException;
+import com.github.ck.todo.cli.util.Jsons;
 import com.github.ck.todo.service.TodoItem;
 import com.github.ck.todo.service.TodoItemRepository;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,8 +17,6 @@ import java.util.stream.Collectors;
 public class FileTodoItemRepository implements TodoItemRepository {
 
     private File file;
-    private final TypeFactory typeFactory = TypeFactory.defaultInstance();
-    private final ObjectMapper mapper = new ObjectMapper();
 
     public FileTodoItemRepository(final File file) {
         this.file = file;
@@ -34,20 +28,12 @@ public class FileTodoItemRepository implements TodoItemRepository {
         if (todoItem.getIndex() == 0) {
             todoItem.assignIndex(all.size() + 1);
             all.add(todoItem);
-            try {
-                mapper.writeValue(file, all);
-            } catch (IOException e) {
-                throw new TodoItemException("Fail to write data to file", e);
-            }
+            Jsons.writeToFile(file, all);
         } else {
             List<TodoItem> collect = all.stream()
                     .map(element -> update(element, todoItem))
                     .collect(Collectors.toList());
-            try {
-                mapper.writeValue(file, collect);
-            } catch (IOException e) {
-                throw new TodoItemException("Fail to write data to file", e);
-            }
+            Jsons.writeToFile(file, collect);
         }
         return todoItem;
     }
@@ -65,11 +51,7 @@ public class FileTodoItemRepository implements TodoItemRepository {
             return new ArrayList<>();
         }
 
-        CollectionType collectionType = typeFactory.constructCollectionType(List.class, TodoItem.class);
-        try {
-            return mapper.readValue(file, collectionType);
-        } catch (IOException e) {
-            throw new TodoItemException("Fail to read data from file", e);
-        }
+        return Jsons.readFromFile(file);
     }
+
 }
