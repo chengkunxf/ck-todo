@@ -25,14 +25,45 @@ public class FileTodoItemRepositoryTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        tempFile = File.createTempFile("file","",tempDir);
+        tempFile = File.createTempFile("file", "", tempDir);
         repository = new FileTodoItemRepository(tempFile);
     }
 
     @Test
-    public void should_find_by_nothing_repository(){
+    public void should_find_by_nothing_repository() {
         List<TodoItem> all = this.repository.findAll();
         assertThat(all).hasSize(0);
+    }
+
+    @Test
+    public void should_save_todo_item() {
+        TodoItem foo = new TodoItem("foo");
+        TodoItem bar = new TodoItem("bar");
+        this.repository.save(foo);
+        this.repository.save(bar);
+
+        List<TodoItem> all = this.repository.findAll();
+        assertThat(all).hasSize(2);
+    }
+
+    @Test
+    public void should_update_todo_item() {
+        TodoItem foo = new TodoItem("foo");
+        TodoItem bar = new TodoItem("bar");
+        this.repository.save(foo);
+        this.repository.save(bar);
+
+        TodoItem newBar = new TodoItem("newBar");
+        newBar.assignIndex(2);
+        newBar.markDone();
+
+        this.repository.save(newBar);
+
+        List<TodoItem> all = this.repository.findAll();
+        TodoItem todoItem = all.get(1);
+        assertThat(todoItem.getIndex()).isEqualTo(2);
+        assertThat(todoItem.getContent()).isEqualTo("newBar");
+        assertThat(todoItem.isDone()).isTrue();
     }
 
 }
