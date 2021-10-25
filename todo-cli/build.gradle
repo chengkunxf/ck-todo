@@ -1,13 +1,23 @@
-plugins {
-    id 'java'
+style {
+    excludePackages = [
+    ]
+    excludeClasses = [
+            "com.github.ck.todo.cli.Bootstrap"
+    ]
 }
 
-version 'unspecified'
+coverage {
+    excludePackages = [
+    ]
+    excludeClasses = [
+            "com.github.ck.todo.cli.Bootstrap",
+            "com.github.ck.todo.cli.util.Jsons"
 
-repositories {
-    mavenCentral()
+    ]
 }
 
-dependencies {
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
+
+project.dependencies {
+    implementation("info.picocli:picocli:$picocliVersion")
+    implementation(project(':todo-core'))
 }
