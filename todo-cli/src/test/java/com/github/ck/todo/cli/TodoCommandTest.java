@@ -1,6 +1,7 @@
 package com.github.ck.todo.cli;
 
 import com.github.ck.todo.cli.repository.FileTodoItemRepository;
+import com.github.ck.todo.service.TodoIndexParameter;
 import com.github.ck.todo.service.TodoItem;
 import com.github.ck.todo.service.TodoItemService;
 import com.github.ck.todo.service.TodoParameter;
@@ -64,5 +65,25 @@ class TodoCommandTest {
         service.addTodoItem(new TodoParameter("foo"));
         assertThat(cli.execute("done", "-1")).isNotEqualTo(0);
         assertThat(cli.execute("done", "2")).isNotEqualTo(0);
+    }
+
+    @Test
+    public void should_list_without_done() {
+        service.addTodoItem(new TodoParameter("foo"));
+        service.addTodoItem(new TodoParameter("bar"));
+        service.addTodoItem(new TodoParameter("blah"));
+        service.markTodoItemDone(new TodoIndexParameter(2));
+
+        assertThat(cli.execute("list")).isEqualTo(0);
+    }
+
+    @Test
+    public void should_list_with_done() {
+        service.addTodoItem(new TodoParameter("foo"));
+        service.addTodoItem(new TodoParameter("bar"));
+        service.addTodoItem(new TodoParameter("blah"));
+        service.markTodoItemDone(new TodoIndexParameter(2));
+
+        assertThat(cli.execute("list", "--all")).isEqualTo(0);
     }
 }

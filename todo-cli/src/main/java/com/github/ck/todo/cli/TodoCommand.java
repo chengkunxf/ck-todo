@@ -7,6 +7,7 @@ import com.github.ck.todo.service.TodoParameter;
 import com.google.common.base.Strings;
 import picocli.CommandLine;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -49,6 +50,50 @@ public class TodoCommand {
         final TodoItem actual = optionalTodoItem.get();
         System.out.printf("Item <%d> done%n", actual.getIndex());
         return 0;
+    }
+
+    @CommandLine.Command(name = "list")
+    public int list(@CommandLine.Option(names = "--all") final boolean isAll) {
+        List<TodoItem> all = service.list(isAll);
+        all.stream()
+                .map(this::formatItem)
+                .forEach(System.out::println);
+        if (isAll) {
+            final long doneCount = all.stream()
+                    .filter(TodoItem::isDone)
+                    .count();
+
+            System.out.println(formatTotal(all.size(), doneCount));
+            return 0;
+        }
+        System.out.println(formatTotal(all.size()));
+        return 0;
+    }
+
+    private String formatTotal(final int size) {
+        return "Total: " + size + unit(size);
+    }
+
+    private String formatTotal(final int size, final long doneCount) {
+        return "Total: "
+                + size + unit(size) + ", "
+                + doneCount + unit(doneCount);
+    }
+
+    private String unit(final long count) {
+        if (count > 1) {
+            return " items";
+        }
+
+        return " item";
+    }
+
+    private String formatItem(final TodoItem todoItem) {
+        if (todoItem.isDone()) {
+            return String.format("%d. [done] %s", todoItem.getIndex(), todoItem.getContent());
+        }
+
+        return String.format("%d. %s", todoItem.getIndex(), todoItem.getContent());
     }
 
 
