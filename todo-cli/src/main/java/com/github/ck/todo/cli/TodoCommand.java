@@ -37,7 +37,7 @@ public class TodoCommand {
         return 0;
     }
 
-    @CommandLine.Command(name = "add")
+    @CommandLine.Command(name = "done")
     public int done(@CommandLine.Parameters(index = "0") final int index) {
         if (index <= 0) {
             throw new CommandLine.ParameterException(spec.commandLine(), "index should be greater than 0");
