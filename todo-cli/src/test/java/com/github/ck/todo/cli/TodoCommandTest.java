@@ -43,4 +43,11 @@ public class TodoCommandTest {
         List<TodoItem> list = service.list(true);
         assertThat(list).hasSize(1);
     }
+
+    @Test
+    public void should_add_todo_item_by_empty() {
+        int result = cli.execute("add", "");
+        assertThat(result).isNotEqualTo(0);
+    }
+
 }
