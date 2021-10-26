@@ -44,7 +44,13 @@ class TodoCommandTest {
     }
 
     @Test
-    public void mark_todo_item_done(){
+    public void should_fail_to_add_empty_todo() {
+        int result = cli.execute("add", "");
+        assertThat(result).isNotEqualTo(0);
+    }
+
+    @Test
+    public void mark_todo_item_done() {
         service.addTodoItem(new TodoParameter("foo"));
         cli.execute("done", "1");
 
