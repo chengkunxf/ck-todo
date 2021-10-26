@@ -52,14 +52,25 @@ public class TodoCommandTest {
     }
 
     @Test
-    public void should_mark_todo_item_done(){
+    public void should_mark_todo_item_done() {
         service.addTodoItem(new TodoParameter("foo"));
-        cli.execute("done","1");
+        cli.execute("done", "1");
 
         List<TodoItem> list = service.list(true);
         TodoItem todoItem = list.get(0);
         assertThat(list).hasSize(1);
         assertThat(todoItem.getContent()).isEqualTo("foo");
+    }
+
+    @Test
+    public void should_mark_todo_item_done_by_unknown_index() {
+        service.addTodoItem(new TodoParameter("foo"));
+        int result = cli.execute("done", "-1");
+        assertThat(result).isNotEqualTo(0);
+
+        int result2 = cli.execute("done", "2");
+        assertThat(result2).isNotEqualTo(0);
+
     }
 
 }
