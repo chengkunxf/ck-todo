@@ -28,11 +28,11 @@ public class FileTodoItemRepository implements TodoItemRepository {
             todoItem.assignIndex(all.size() + 1);
             all.add(todoItem);
             Jsons.writeToFile(file, all);
-        } else {
-            List<TodoItem> collect = all.stream().map(element -> updateTodoItem(element, todoItem))
-                    .collect(Collectors.toList());
-            Jsons.writeToFile(file, collect);
+            return todoItem;
         }
+        List<TodoItem> collect = all.stream().map(element -> updateTodoItem(element, todoItem))
+                .collect(Collectors.toList());
+        Jsons.writeToFile(file, collect);
         return todoItem;
     }
 
