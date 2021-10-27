@@ -1,6 +1,7 @@
 package com.github.ck.todo.cli;
 
 import com.github.ck.todo.cli.repository.FileTodoItemRepository;
+import com.github.ck.todo.core.TodoIndexParameter;
 import com.github.ck.todo.core.TodoItem;
 import com.github.ck.todo.core.TodoItemService;
 import com.github.ck.todo.core.TodoParameter;
@@ -39,7 +40,7 @@ public class TodoCommandTest {
     }
 
     @Test
-    public void should_add_todo_item(){
+    public void should_add_todo_item() {
         int result = cli.execute("add", "foo");
         assertThat(result).isEqualTo(0);
 
@@ -49,22 +50,43 @@ public class TodoCommandTest {
     }
 
     @Test
-    public void should_add_todo_item_by_null(){
+    public void should_add_todo_item_by_null() {
         int result = cli.execute("add", "");
         assertThat(result).isNotEqualTo(0);
     }
 
     @Test
-    public void should_mark_todo_item_done(){
+    public void should_mark_todo_item_done() {
         service.addTodoItem(new TodoParameter("foo"));
         int result = cli.execute("done", "1");
         assertThat(result).isEqualTo(0);
     }
 
     @Test
-    public void should_mark_todo_item_done_by_wrong_index(){
+    public void should_mark_todo_item_done_by_wrong_index() {
         service.addTodoItem(new TodoParameter("foo"));
         int result = cli.execute("done", "2");
         assertThat(result).isNotEqualTo(0);
+    }
+
+    @Test
+    public void should_list() {
+        service.addTodoItem(new TodoParameter("foo"));
+        service.addTodoItem(new TodoParameter("bar"));
+        service.addTodoItem(new TodoParameter("blah"));
+        service.markTodoItemDone(new TodoIndexParameter(1));
+
+        int result = cli.execute("list");
+        assertThat(result).isEqualTo(0);
+    }
+
+    @Test
+    public void should_list_with_done() {
+        service.addTodoItem(new TodoParameter("foo"));
+        service.addTodoItem(new TodoParameter("bar"));
+        service.addTodoItem(new TodoParameter("blah"));
+        service.markTodoItemDone(new TodoIndexParameter(1));
+
+        assertThat(cli.execute("list", "--all")).isEqualTo(0);
     }
 }

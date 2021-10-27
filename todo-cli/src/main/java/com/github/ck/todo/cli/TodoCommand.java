@@ -7,6 +7,7 @@ import com.github.ck.todo.core.TodoParameter;
 import com.google.common.base.Strings;
 import picocli.CommandLine;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -46,5 +47,49 @@ public class TodoCommand {
         System.out.printf("todo done <%d>%n", todoItem.getIndex());
         System.out.printf("Item <%d> done.%n", todoItem.getIndex());
         return 0;
+    }
+
+    @CommandLine.Command(name = "list")
+    public int list(@CommandLine.Option(names = "--all") final boolean isAll) {
+        List<TodoItem> todoItemList = this.service.list(isAll);
+        todoItemList.stream().map(this::formatItem).forEach(System.out::println);
+
+        if (isAll) {
+            final long doneCount = todoItemList.stream()
+                    .filter(TodoItem::isDone)
+                    .count();
+
+            System.out.println(formatTotal(todoItemList.size(), doneCount));
+            return 0;
+        }
+
+        System.out.println(formatTotal(todoItemList.size()));
+        return 0;
+    }
+
+    private String formatTotal(final int size, final long doneCount) {
+        return "Total: "
+                + size + unit(size) + ", "
+                + doneCount + unit(doneCount);
+    }
+
+    private String formatTotal(final int size) {
+        return "Total: " + size + unit(size);
+    }
+
+    private String unit(final long count) {
+        if (count > 1) {
+            return " items";
+        }
+
+        return " item";
+    }
+
+
+    private String formatItem(final TodoItem todoItem) {
+        if (todoItem.isDone()) {
+            return String.format("%d. [Done] %s%n", todoItem.getIndex(), todoItem.getContent());
+        }
+        return String.format("%d. %s%n", todoItem.getIndex(), todoItem.getContent());
     }
 }
