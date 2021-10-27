@@ -3,6 +3,7 @@ package com.github.ck.todo.cli;
 import com.github.ck.todo.cli.repository.FileTodoItemRepository;
 import com.github.ck.todo.core.TodoItem;
 import com.github.ck.todo.core.TodoItemService;
+import com.github.ck.todo.core.TodoParameter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -50,6 +51,20 @@ public class TodoCommandTest {
     @Test
     public void should_add_todo_item_by_null(){
         int result = cli.execute("add", "");
+        assertThat(result).isNotEqualTo(0);
+    }
+
+    @Test
+    public void should_mark_todo_item_done(){
+        service.addTodoItem(new TodoParameter("foo"));
+        int result = cli.execute("done", "1");
+        assertThat(result).isEqualTo(0);
+    }
+
+    @Test
+    public void should_mark_todo_item_done_by_wrong_index(){
+        service.addTodoItem(new TodoParameter("foo"));
+        int result = cli.execute("done", "2");
         assertThat(result).isNotEqualTo(0);
     }
 }
