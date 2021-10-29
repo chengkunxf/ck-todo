@@ -1,5 +1,6 @@
 package com.github.ck.todo.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class TodoItemService {
 
     private final TodoItemRepository repository;
 
+    @Autowired
     public TodoItemService(final TodoItemRepository repository) {
         this.repository = repository;
     }
