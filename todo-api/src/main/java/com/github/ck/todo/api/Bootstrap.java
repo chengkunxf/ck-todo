@@ -14,7 +14,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  */
 @SpringBootApplication
 @EnableJpaRepositories("com.github.ck.todo.api.repository")
-@EntityScan("com.github.ck.todo.core")
+@EntityScan("com.github.ck.todo.service")
 @ComponentScan("com.github.ck.todo")
 public class Bootstrap {
 
