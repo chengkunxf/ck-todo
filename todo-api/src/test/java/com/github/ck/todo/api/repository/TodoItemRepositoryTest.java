@@ -2,6 +2,7 @@ package com.github.ck.todo.api.repository;
 
 import com.github.ck.todo.service.TodoItem;
 import com.github.ck.todo.service.TodoItemRepository;
+import com.google.common.collect.Iterables;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -49,16 +50,14 @@ public class TodoItemRepositoryTest {
         this.repository.save(foo);
         this.repository.save(bar);
 
-        TodoItem newBar = new TodoItem("newBar");
-        newBar.assignIndex(2);
-        newBar.markDone();
+        final Iterable<TodoItem> items = repository.findAll();
+        final TodoItem toUpdate = Iterables.get(items, 0);
+        toUpdate.markDone();
 
-        this.repository.save(newBar);
+        repository.save(toUpdate);
 
-        List<TodoItem> all = this.repository.findAll();
-        TodoItem todoItem = all.get(1);
-        assertThat(todoItem.getIndex()).isEqualTo(2);
-        assertThat(todoItem.getContent()).isEqualTo("newBar");
-        assertThat(todoItem.isDone()).isTrue();
+        final Iterable<TodoItem> updated = repository.findAll();
+        assertThat(updated).hasSize(2);
+        assertThat(Iterables.get(items, 0).isDone()).isTrue();
     }
 }
