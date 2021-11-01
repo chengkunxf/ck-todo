@@ -1,5 +1,7 @@
 package com.github.ck.todo.core;
 
+import org.springframework.data.repository.Repository;
+
 import java.util.List;
 
 /**
@@ -7,7 +9,7 @@ import java.util.List;
  * @date 2021/10/22 2:41 下午
  * @description
  */
-public interface TodoItemRepository {
+public interface TodoItemRepository extends Repository<TodoItem, Long> {
     TodoItem save(TodoItem todoItem);
 
     List<TodoItem> findAll();
