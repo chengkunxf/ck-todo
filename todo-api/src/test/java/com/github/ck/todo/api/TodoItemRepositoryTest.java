@@ -1,4 +1,5 @@
 package com.github.ck.todo.api;
+
 import com.github.ck.todo.core.TodoItem;
 import com.github.ck.todo.core.TodoItemRepository;
 import com.google.common.collect.Iterables;
@@ -14,7 +15,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
