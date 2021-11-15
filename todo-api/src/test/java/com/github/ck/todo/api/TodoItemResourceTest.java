@@ -41,7 +41,7 @@ public class TodoItemResourceTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/todo-items")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(todoItem))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         assertThat(repository.findAll()).anyMatch(item -> item.getContent().equals("foo"));
     }

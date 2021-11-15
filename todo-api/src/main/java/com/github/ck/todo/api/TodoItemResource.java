@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 /**
  * @author chengkunxf@126.com
@@ -34,7 +37,13 @@ public class TodoItemResource {
         }
         TodoItem todoItem = this.service.addTodoItem(new TodoParameter(request.getContent()));
 
-        return ResponseEntity.ok().build();
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(todoItem.getIndex())
+                .toUri();
+
+        return ResponseEntity.created(uri).build();
     }
 
 }
