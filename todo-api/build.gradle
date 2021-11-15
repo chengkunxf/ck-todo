@@ -23,7 +23,8 @@ coverage {
     excludePackages = [
     ]
     excludeClasses = [
-            "com.github.ck.todo.api.Bootstrap"
+            "com.github.ck.todo.api.Bootstrap",
+            "com.github.ck.todo.api.MarkAsDoneRequest"
     ]
 }
 

@@ -1,18 +1,22 @@
 package com.github.ck.todo.api;
 
+import com.github.ck.todo.core.TodoIndexParameter;
 import com.github.ck.todo.core.TodoItem;
 import com.github.ck.todo.core.TodoItemService;
 import com.github.ck.todo.core.TodoParameter;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
 
 /**
  * @author chengkunxf@126.com
@@ -44,6 +48,17 @@ public class TodoItemResource {
                 .toUri();
 
         return ResponseEntity.created(uri).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity markAsDone(@PathVariable("id") final int id,
+                                     @RequestBody final MarkAsDoneRequest request) {
+
+        Optional<TodoItem> optionalTodoItem = this.service.markTodoItemDone(new TodoIndexParameter(id));
+        if (optionalTodoItem.isPresent()) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
     }
 
 }

@@ -1,5 +1,6 @@
 package com.github.ck.todo.api;
 
+import com.github.ck.todo.core.TodoItem;
 import com.github.ck.todo.core.TodoItemRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,4 +58,32 @@ public class TodoItemResourceTest {
                 .content(todoItem))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    public void should_mark_as_done() throws Exception {
+        final TodoItem newItem = repository.save(new TodoItem("foo"));
+        assertThat(newItem.isDone()).isFalse();
+
+        String done = "{ \"done\": true }";
+
+        System.out.println("Before mark as done:" + newItem.getIndex());
+        mockMvc.perform(MockMvcRequestBuilders.put("/todo-items/" + newItem.getIndex())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(done))
+                .andExpect(status().isOk());
+
+        assertThat(repository.findAll()).anyMatch(item -> item.getContent().equals("foo") && item.isDone());
+    }
+
+    @Test
+    public void should_fail_to_mark_with_out_of_index() throws Exception {
+        String done = "{ \"done\": true }";
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/todo-items/-1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(done))
+                .andExpect(status().isBadRequest());
+    }
+
+
 }
