@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @description
  */
 @SpringBootApplication
-@EnableJpaRepositories("com.github.ck.todo.api.repository")
+@EnableJpaRepositories("com.github.ck.todo.core")
 @EntityScan("com.github.ck.todo.core")
 @ComponentScan("com.github.ck.todo")
 public class Bootstrap {
